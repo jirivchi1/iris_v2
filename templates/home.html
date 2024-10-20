@@ -1,18 +1,13 @@
 <!-- templates/home.html -->
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-<body>
-    <h1>Bienvenido, {{ username }}!</h1>
-    <p>Has iniciado sesión correctamente.</p>
-    
-    <!-- Botón para cerrar sesión -->
-    <form action="/logout" method="POST">
-        <button type="submit">Cerrar Sesión</button>
-    </form>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1>Bienvenido, {{ username }}!</h1>
+<p>Has iniciado sesión correctamente.</p>
+
+<form action="/logout" method="POST">
+    <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+</form>
+{% endblock %}

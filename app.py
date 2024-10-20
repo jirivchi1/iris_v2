@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from pymongo import MongoClient
 
 app = Flask(__name__)
 
-# Configurar una clave secreta para las sesiones
+# Configurar una clave secreta para las sesiones y los mensajes flash
 app.secret_key = "mysecretkey"
 
 # Conexión a MongoDB
@@ -22,11 +22,12 @@ def login():
 
         if user:
             session["username"] = username
-            return redirect(
-                url_for("home")
-            )  # Redirigimos al home si el login es correcto
+            flash("Login exitoso", "success")  # Mensaje flash de éxito
+            return redirect(url_for("home"))
         else:
-            return "Credenciales inválidas"
+            flash(
+                "Credenciales inválidas. Inténtalo de nuevo.", "danger"
+            )  # Mensaje flash de error
     return render_template("login.html")
 
 
@@ -40,10 +41,16 @@ def signup():
         existing_user = users_collection.find_one({"username": username})
 
         if existing_user:
-            return "El nombre de usuario ya está registrado"
+            flash(
+                "El nombre de usuario ya está registrado.", "danger"
+            )  # Mensaje flash de error
+            return redirect(url_for("signup"))
 
         users_collection.insert_one({"username": username, "password": password})
-        return redirect(url_for("login"))  # Redirige al login tras el registro
+        flash(
+            "Registro exitoso. Ahora puedes iniciar sesión.", "success"
+        )  # Mensaje flash de éxito
+        return redirect(url_for("login"))
 
     return render_template("signup.html")
 
@@ -54,13 +61,15 @@ def home():
     if "username" in session:
         return render_template("home.html", username=session["username"])
     else:
+        flash("Debes iniciar sesión para acceder a esta página.", "warning")
         return redirect(url_for("login"))
 
 
 # Ruta para cerrar sesión
 @app.route("/logout", methods=["POST"])
 def logout():
-    session.pop("username", None)  # Elimina el nombre de usuario de la sesión
+    session.pop("username", None)
+    flash("Has cerrado sesión exitosamente.", "info")  # Mensaje flash al cerrar sesión
     return redirect(url_for("login"))
 
 
