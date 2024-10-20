@@ -1,6 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for
+from pymongo import MongoClient
 
 app = Flask(__name__)
+
+# Conexión a MongoDB usando tu base de datos 'iris_database'
+client = MongoClient("mongodb://localhost:27017/")
+db = client["iris_database"]  # Base de datos 'iris_database'
+users_collection = db["users"]  # Colección nueva 'users'
 
 
 # Ruta para el home
@@ -15,15 +21,12 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        # Aquí validaríamos usuario y contraseña
-        if (
-            username == "admin" and password == "password"
-        ):  # Simulación de login correcto
-            return redirect(
-                url_for("home")
-            )  # Si el login es correcto, redirige al home
+        user = users_collection.find_one({"username": username, "password": password})
+
+        if user:  # Si encontramos un usuario con esas credenciales
+            return redirect(url_for("home"))
         else:
-            return "Credenciales inválidas"  # Si es incorrecto, muestra mensaje
+            return "Credenciales inválidas"
     return render_template("login.html")
 
 
