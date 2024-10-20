@@ -1,12 +1,18 @@
+<!-- templates/home.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Página Flask</title>
+    <title>Home</title>
 </head>
 <body>
-    <h1>Bienvenido a mi página Flask</h1>
-    <p>Esta es una aplicación simple utilizando Flask.</p>
+    <h1>Bienvenido, {{ username }}!</h1>
+    <p>Has iniciado sesión correctamente.</p>
+    
+    <!-- Botón para cerrar sesión -->
+    <form action="/logout" method="POST">
+        <button type="submit">Cerrar Sesión</button>
+    </form>
 </body>
 </html>
