@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Bienvenido al Dashboard</h1>
+<p>Esta es la página de administración solo para personal.</p>
+
+<!-- Usamos un formulario para enviar un POST para cerrar sesión -->
+<form action="/logout" method="POST">
+    <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+</form>
+{% endblock %}
