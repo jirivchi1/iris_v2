@@ -3,6 +3,8 @@ from flask import render_template, request, redirect, url_for, session, flash
 from app import app, db, users_collection
 from app.models import find_user, insert_survey_response
 
+from app.controllers.question_controller import handle_question_and_response
+
 
 # Ruta para login
 @app.route("/login", methods=["GET", "POST"])
@@ -109,3 +111,21 @@ def dashboard():
             "Debes iniciar sesión como personal para acceder al dashboard.", "warning"
         )
         return redirect(url_for("login"))
+
+
+@app.route("/test", methods=["GET", "POST"])
+def test():
+    image_path = "images/group/banana_group.jpg"
+    if request.method == "POST":
+        user_name = request.form["user_name"]
+        question = request.form["question"]
+        response = handle_question_and_response(user_name, question, image_path)
+        return render_template(
+            "response.html",
+            image_path=image_path,
+            question=question,
+            response=response,
+            user_name=user_name,
+        )
+
+    return render_template("test.html", image_path=image_path)
