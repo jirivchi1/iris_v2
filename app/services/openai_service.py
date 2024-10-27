@@ -16,7 +16,7 @@ def get_openai_response(question, image_path):
     base64_image = encode_image(image_path)
 
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4o",
         messages=[
             {
                 "role": "user",

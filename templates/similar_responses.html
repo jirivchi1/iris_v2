@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Similar Responses Ranking</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Similar Responses Ranking</h1>
+    <form method="POST">
+        <label for="query">Enter your query:</label>
+        <input type="text" id="query" name="query" value="{{ query }}" required>
+        <button type="submit">Find Similar Responses</button>
+    </form>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% if similar_users %}
+        <h2>Ranking of Similar Responses:</h2>
+        <ol>
+            {% for user in similar_users %}
+                <li>{{ user }}</li>
+            {% endfor %}
+        </ol>
+    {% elif query %}
+        <p>No similar responses found for the given query.</p>
+    {% endif %}
+</body>
+</html>
