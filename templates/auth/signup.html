@@ -5,7 +5,7 @@
 
 {% block content %}
 <h1>Registro de Usuario</h1>
-<form action="/signup" method="POST">
+<form action="{{ url_for('auth.signup') }}" method="POST">
     <label for="username">Usuario:</label>
     <input type="text" id="username" name="username" required>
     <br>

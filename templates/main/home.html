@@ -7,7 +7,7 @@
 <h1>Bienvenido, {{ username }}!</h1>
 <p>Has iniciado sesión correctamente.</p>
 
-<form action="/logout" method="POST">
+<form action="{{ url_for('auth.logout') }}" method="POST">
     <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
 </form>
 {% endblock %}

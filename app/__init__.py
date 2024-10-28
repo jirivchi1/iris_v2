@@ -3,14 +3,15 @@ from flask import Flask
 from pymongo import MongoClient
 import os
 
-# Get the absolute path to the project root directory
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 # Inicialización de Flask
 app = Flask(
     __name__,
-    template_folder=os.path.join(project_root, "templates"),
-    static_folder=os.path.join(project_root, "static"),
+    template_folder=os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "templates"
+    ),
+    static_folder=os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "static"
+    ),
 )
 app.secret_key = "mysecretkey"
 
@@ -18,8 +19,17 @@ app.secret_key = "mysecretkey"
 client = MongoClient("mongodb://localhost:27017/")
 db = client["iris_database"]
 users_collection = db["users"]
-questions_collection = db["questions"]  # Nueva colección para preguntas
+questions_collection = db["questions"]
 
+# Registrar los blueprints
+from app.auth.routes import auth as auth_blueprint
+from app.main.routes import main as main_blueprint
+from app.encuesta.routes import encuesta as encuesta_blueprint
+from app.quiz.routes import quiz as quiz_blueprint
+from app.workers.routes import workers as workers_blueprint
 
-# Importar rutas
-from app import routes
+app.register_blueprint(auth_blueprint, url_prefix="/auth")
+app.register_blueprint(main_blueprint)
+app.register_blueprint(encuesta_blueprint, url_prefix="/encuesta")
+app.register_blueprint(quiz_blueprint, url_prefix="/quiz")
+app.register_blueprint(workers_blueprint, url_prefix="/workers")

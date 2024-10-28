@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1>Iniciar Sesión</h1>
-<form action="/login" method="POST">
+<form action="{{ url_for('auth.login') }}" method="post">
     <label for="username">Usuario:</label>
     <input type="text" id="username" name="username" required>
     <br>
@@ -15,5 +15,5 @@
     <button type="submit" name="role" value="personal" class="btn btn-secondary">Login como Personal</button>
 </form>
 
-<p>¿No tienes una cuenta? <a href="/signup">Regístrate aquí</a></p>
+<p>¿No tienes una cuenta? <a href="{{ url_for('auth.signup') }}">Regístrate aquí</a></p>
 {% endblock %}

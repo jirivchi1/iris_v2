@@ -7,7 +7,7 @@
 <p>Esta es la página de administración solo para personal.</p>
 
 <!-- Usamos un formulario para enviar un POST para cerrar sesión -->
-<form action="/logout" method="POST">
+<form action="{{ url_for('auth.logout') }}" method="POST">
     <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
 </form>
 {% endblock %}
