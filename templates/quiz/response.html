@@ -3,12 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Response</title>
+    <!-- Enlace al archivo CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Response to Your Question</h1>
-    <p><strong>Name:</strong> {{ user_name }}</p>
-    <p><strong>Question:</strong> {{ question }}</p>
-    <p><strong>Response:</strong> {{ response }}</p>
-    <img src="{{ url_for('static', filename=image_path) }}" alt="Test Image">
+    <h1>Respuesta a tus preguntas</h1>
+    
+    <p><strong>Nombre:</strong> {{ user_name }}</p>
+    <p><strong>Edad:</strong> {{ age }}</p>
+    <p><strong>Carrera/Profesión:</strong> {{ career_profession }}</p>
+
+    <!-- Respuesta para la primera imagen -->
+    <h2>Imagen 1</h2>
+    <img src="{{ url_for('static', filename=image_path_1) }}" alt="Image 1">
+    <p><strong>Pregunta 1 Usuario:</strong> {{ question_1 }}</p>
+    <p><strong>Respuesta 1 Modelo:</strong> {{ response_1 }}</p>
+
+    <!-- Respuesta para la segunda imagen -->
+    <h2>Imagen 2</h2>
+    <img src="{{ url_for('static', filename=image_path_2) }}" alt="Image 2">
+    <p><strong>Pregunta 2 Usuario:</strong> {{ question_2 }}</p>
+    <p><strong>Respuesta 2 Modelo:</strong> {{ response_2 }}</p>
+
+    <!-- Botón para volver a la página de preguntas -->
+    <a href="{{ url_for('quiz.test') }}" class="btn">Volver</a>
 </body>
 </html>

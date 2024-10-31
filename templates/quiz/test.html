@@ -1,16 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Ask a Question</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Ask Questions About These Images</title>
+        <!-- Vincula el archivo CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    
 <body>
-    <h1>Ask a Question About This Image</h1>
-    <img src="{{ url_for('static', filename=image_path) }}" alt="Test Image">
+    <h1>Provide Your Information and Ask Questions About the Images</h1>
+    
     <form action="{{ url_for('quiz.test') }}" method="post">
-        <input type="text" name="user_name" placeholder="Your Name" required>
-        <input type="text" name="question" placeholder="What do you want to ask?" required>
-        <button type="submit">Submit</button>
+        <!-- Información del usuario -->
+        <label for="user_name">Nombre:</label>
+        <input type="text" id="user_name" name="user_name" placeholder="Tu nombre" required><br>
+
+        <label for="age">Edad:</label>
+        <input type="number" id="age" name="age" placeholder="Tu edad" required><br>
+
+        <label for="career_profession">Carrera/Profesión:</label>
+        <input type="text" id="career_profession" name="career_profession" placeholder="Tu carrera o profesión" required><br>
+
+        <!-- Primera imagen y pregunta -->
+        <h2>Imagen 1</h2>
+        <img src="{{ url_for('static', filename=image_path_1) }}" alt="Image 1">
+        <textarea id="question_1" name="question_1" placeholder="¿Qué quieres preguntar sobre esta imagen?" required></textarea><br>
+
+        <!-- Segunda imagen y pregunta -->
+        <h2>Imagen 2</h2>
+        <img src="{{ url_for('static', filename=image_path_2) }}" alt="Image 2">
+        <textarea id="question_2" name="question_2" placeholder="¿Qué quieres preguntar sobre esta imagen?" required></textarea><br>
+
+        <!-- Botón de envío -->
+        <button type="submit">Enviar</button>
     </form>
 </body>
 </html>
