@@ -1,7 +1,7 @@
 # app/auth/routes.py
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from app import db, users_collection
-from app.models import find_user
+from app.models.models import find_user
 
 auth = Blueprint("auth", __name__)
 

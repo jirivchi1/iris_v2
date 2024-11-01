@@ -6,7 +6,20 @@
 <h1>Bienvenido al Dashboard</h1>
 <p>Esta es la página de administración solo para personal.</p>
 
-<!-- Usamos un formulario para enviar un POST para cerrar sesión -->
+<form action="{{ url_for('workers.visualize_ranking') }}" method="POST">
+    <input type="text" name="query_text" placeholder="Ingresa la descripción para buscar similitud">
+    <button type="submit" class="btn btn-primary">Visualizar Ranking</button>
+</form>
+
+{% if similar_responses %}
+    <h2>Respuestas más similares</h2>
+    <ul>
+        {% for user, question_id in similar_responses %}
+            <li>{{ user }} - {{ question_id }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
 <form action="{{ url_for('auth.logout') }}" method="POST">
     <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
 </form>

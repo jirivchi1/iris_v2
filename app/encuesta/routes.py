@@ -1,7 +1,7 @@
 # Este archivo está vacío
 # app/encuesta/routes.py
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from app.models import insert_survey_response
+from app.models.models import insert_survey_response
 
 encuesta = Blueprint("encuesta", __name__)
 

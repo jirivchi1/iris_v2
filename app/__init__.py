@@ -27,6 +27,8 @@ from app.main.routes import main as main_blueprint
 from app.encuesta.routes import encuesta as encuesta_blueprint
 from app.quiz.routes import quiz as quiz_blueprint
 from app.workers.routes import workers as workers_blueprint
+from app.models.models import find_user, insert_survey_response
+
 
 app.register_blueprint(auth_blueprint, url_prefix="/auth")
 app.register_blueprint(main_blueprint)

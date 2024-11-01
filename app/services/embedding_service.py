@@ -26,11 +26,10 @@ def get_embedding(text):
 def find_similar_responses(query_text, limit=5):
     """
     Find the most similar responses to the given query text.
-    Returns a ranking of user names, with the most similar first.
+    Returns a ranking of user names and questions, with the most similar first.
     """
     query_embedding = get_embedding(query_text)
 
-    # Use $nearSphere instead of $vectorSearch
     results = embeddings_collection.find(
         {
             "embedding": {
@@ -39,11 +38,11 @@ def find_similar_responses(query_text, limit=5):
                 }
             }
         },
-        {"user_name": 1, "_id": 0},
+        {"user_name": 1, "question_id": 1, "_id": 0},
     ).limit(limit)
 
-    # Return a list of user names, ranked by similarity
-    return [result["user_name"] for result in results]
+    # Return a list of (user_name, question_id) tuples ranked by similarity
+    return [(result["user_name"], result["question_id"]) for result in results]
 
 
 # Example usage

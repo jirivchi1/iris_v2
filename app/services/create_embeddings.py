@@ -25,19 +25,21 @@ def get_embedding(text):
     return response.data[0].embedding
 
 
-# Function to create embeddings and store in new collection
+# create_embeddings.py
 def create_and_store_embeddings():
     for doc in questions_collection.find():
-        response_text = doc.get("response", "")
-        if response_text:
-            embedding = get_embedding(response_text)
-            embeddings_collection.insert_one(
-                {
-                    "user_name": doc["user_name"],
-                    "response": response_text,
-                    "embedding": embedding,
-                }
-            )
+        for i in range(1, 3):  # Asumiendo dos respuestas, puedes ajustar si hay más
+            response_text = doc.get(f"response_{i}", "")
+            if response_text:
+                embedding = get_embedding(response_text)
+                embeddings_collection.insert_one(
+                    {
+                        "user_name": doc["user_name"],
+                        "response": response_text,
+                        "question_id": f"question_{i}",  # Identifica la pregunta
+                        "embedding": embedding,
+                    }
+                )
     print("Embeddings created and stored successfully.")
 
 
