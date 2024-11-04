@@ -16,7 +16,7 @@ def get_openai_response(question, image_path):
     base64_image = encode_image(image_path)
 
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4o-mini",
         messages=[
             {
                 "role": "user",
@@ -29,6 +29,31 @@ def get_openai_response(question, image_path):
                 ],
             }
         ],
-        max_tokens=300,
+        max_tokens=50,
+    )
+    return response.choices[0].message.content
+
+
+def generate_solution_description(image_path):
+    client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    base64_image = encode_image(image_path)
+
+    fixed_prompt = "Eres un sistema experto en describir y contar objetos o animales. Se directo y describe lo que ves en la imagen."
+
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": fixed_prompt},
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"},
+                    },
+                ],
+            }
+        ],
+        max_tokens=100,
     )
     return response.choices[0].message.content

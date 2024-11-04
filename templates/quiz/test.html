@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Ask Questions About These Images</title>
-        <!-- Vincula el archivo CSS -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    </head>
-    
+<head>
+    <meta charset="UTF-8">
+    <title>Ask Questions About These Images</title>
+    <!-- Vincula el archivo CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
 <body>
-    <h1>Provide Your Information and Ask Questions About the Images</h1>
-    
+    <h1>Proporciona tu información y haz preguntas sobre las imágenes</h1>
+
     <form action="{{ url_for('quiz.test') }}" method="post">
         <!-- Información del usuario -->
         <label for="user_name">Nombre:</label>
@@ -21,15 +20,12 @@
         <label for="career_profession">Carrera/Profesión:</label>
         <input type="text" id="career_profession" name="career_profession" placeholder="Tu carrera o profesión" required><br>
 
-        <!-- Primera imagen y pregunta -->
-        <h2>Imagen 1</h2>
-        <img src="{{ url_for('static', filename=image_path_1) }}" alt="Image 1">
-        <textarea id="question_1" name="question_1" placeholder="¿Qué quieres preguntar sobre esta imagen?" required></textarea><br>
-
-        <!-- Segunda imagen y pregunta -->
-        <h2>Imagen 2</h2>
-        <img src="{{ url_for('static', filename=image_path_2) }}" alt="Image 2">
-        <textarea id="question_2" name="question_2" placeholder="¿Qué quieres preguntar sobre esta imagen?" required></textarea><br>
+        <!-- Iterar sobre las preguntas -->
+        {% for question in questions %}
+            <h2>Imagen {{ loop.index }}</h2>
+            <img src="{{ url_for('static', filename=question.image_path_html) }}" alt="Imagen {{ loop.index }}">
+            <textarea id="question_{{ loop.index }}" name="question_{{ loop.index }}" placeholder="¿Qué quieres preguntar sobre esta imagen?" required></textarea><br>
+        {% endfor %}
 
         <!-- Botón de envío -->
         <button type="submit">Enviar</button>

@@ -1,3 +1,5 @@
+/* static/css/style.css */
+
 /* Estilos generales */
 body {
     font-family: Arial, sans-serif;
@@ -32,7 +34,7 @@ textarea {
 }
 
 /* Estilo del botón */
-.btn {
+.btn-custom {
     padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
@@ -41,6 +43,65 @@ textarea {
     cursor: pointer;
 }
 
-.btn:hover {
+.btn-custom:hover {
     background-color: #0056b3;
+}
+
+/* Dashboard-specific styles */
+.dashboard-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.dashboard-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-generate, .form-ranking, .form-logout {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.ranking-results {
+    margin-top: 30px;
+}
+
+.ranking-results h2 {
+    margin-bottom: 15px;
+}
+
+.solution-description {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.similarity-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.similarity-list li {
+    background-color: #e9ecef;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .dashboard-container {
+        padding: 10px;
+    }
+
+    .btn-custom {
+        width: 100%;
+        margin-bottom: 10px;
+    }
 }

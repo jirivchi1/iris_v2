@@ -1,26 +1,55 @@
+<!-- templates/workers/dashboard.html -->
+
 {% extends "base.html" %}
 
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<h1>Bienvenido al Dashboard</h1>
-<p>Esta es la página de administración solo para personal.</p>
+<div class="dashboard-container">
+    <h1>Bienvenido al Dashboard</h1>
+    <p>Esta es la página de administración solo para personal.</p>
 
-<form action="{{ url_for('workers.visualize_ranking') }}" method="POST">
-    <input type="text" name="query_text" placeholder="Ingresa la descripción para buscar similitud">
-    <button type="submit" class="btn btn-primary">Visualizar Ranking</button>
-</form>
+    <!-- Button to generate solution descriptions and embeddings -->
+    <form action="{{ url_for('workers.dashboard') }}" method="POST" class="form-generate">
+        <button type="submit" class="btn btn-primary">Generar Descripciones y Embeddings</button>
+    </form>
 
-{% if similar_responses %}
-    <h2>Respuestas más similares</h2>
-    <ul>
-        {% for user, question_id in similar_responses %}
-            <li>{{ user }} - {{ question_id }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+    <!-- Form to select question and visualize ranking -->
+    <form action="{{ url_for('workers.visualize_ranking') }}" method="POST" class="form-ranking">
+        <div class="form-group">
+            <label for="question_id">Selecciona la pregunta:</label>
+            <select name="question_id" id="question_id" class="form-select">
+                {% for question in questions %}
+                    <option value="{{ question.question_id }}">{{ question.question_id }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Visualizar Ranking</button>
+    </form>
 
-<form action="{{ url_for('auth.logout') }}" method="POST">
-    <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
-</form>
+    {% if similar_responses %}
+        <div class="ranking-results">
+            <h2>Respuestas más similares para {{ selected_question }}</h2>
+            <p><strong>Descripción correcta:</strong></p>
+            <div class="solution-description">
+                {{ solution_description }}
+            </div>
+            <ul class="similarity-list">
+                {% for item in similar_responses %}
+                    <li>
+                        <strong>{{ item.user_name }}</strong> - Similitud: {{ item.similarity|round(4) }}
+                        {% if item.prompt %}
+                            <br>
+                            <em>Prompt del usuario:</em> {{ item.prompt }}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <form action="{{ url_for('auth.logout') }}" method="POST" class="form-logout">
+        <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+    </form>
+</div>
 {% endblock %}
