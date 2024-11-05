@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>¡Escribe la Mejor Pregunta!</title>
+    <title>Ask Questions About These Images</title>
     <!-- Vincula el archivo CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
@@ -22,20 +22,13 @@
         <label for="career_profession">Carrera/Profesión:</label>
         <input type="text" id="career_profession" name="career_profession" placeholder="Tu carrera o profesión" required><br>
 
-        <!-- Imagen 1 con solución específica -->
-        <h2>Imagen 1</h2>
-        <img src="{{ url_for('static', filename='images/test/4_renos.png') }}" alt="Imagen 1">
-        <p><strong>Respuesta:</strong> hay 4 ciervos</p>
-        <textarea id="question_1" name="question_1" placeholder="¡Sé CREATIVO! Cuanto más escribas más te acercas a la respuesta" required></textarea><br>
+        <!-- Iterar sobre las preguntas -->
+        {% for question in questions %}
+            <h2>Imagen {{ loop.index }}</h2>
+            <img src="{{ url_for('static', filename=question.image_path_html) }}" alt="Imagen {{ loop.index }}">
+            <textarea id="question_{{ loop.index }}" name="question_{{ loop.index }}" placeholder="¡Sé CREATIVO! Cuanto más escribas más te acercas a la respuesta" required></textarea><br>
+        {% endfor %}
 
-        <!-- Imagen 2 con solución específica -->
-        <h2>Imagen 2</h2>
-        <img src="{{ url_for('static', filename='images/test/uvas.jpg') }}" alt="Imagen 2">
-        <p><strong>Respuesta:</strong> hay un racimo de uvas verdes y moradas. un total de 8 moradas y 11 verdes.</p>
-        <textarea id="question_2" name="question_2" placeholder="¡Sé CREATIVO! Cuanto más escribas más te acercas a la respuesta" required></textarea><br>
-
-        <!-- Agregar más imágenes con soluciones manualmente si es necesario -->
-        
         <!-- Botón de envío -->
         <button type="submit">Enviar</button>
     </form>
