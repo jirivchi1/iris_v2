@@ -70,7 +70,7 @@ def cosine_similarity(a, b):
     return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
 
 
-def find_similar_responses(question_id, limit=5):
+def find_similar_responses(question_id, limit=20):
     """
     Find the most similar user responses to the solution for a specific question.
     Returns a ranking of user names and similarities.
