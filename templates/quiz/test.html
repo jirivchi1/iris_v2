@@ -1,3 +1,4 @@
+<!-- templates/quiz/test.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,13 +6,21 @@
     <title>¡Escribe la Mejor Pregunta!</title>
     <!-- Vincula el archivo CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Agrega la función JavaScript -->
+    <script>
+    function disableSubmit() {
+        document.getElementById('submit-button').disabled = true;
+        document.getElementById('submit-button').innerText = 'Enviando...';
+    }
+    </script>
 </head>
 <body>
     <h1>¡Escribe la Mejor Pregunta!</h1>
 
     <p>Observa cada imagen y escribe una pregunta que ayude a la IA a dar la respuesta correcta sobre lo que ves en la imagen.</p>
 
-    <form action="{{ url_for('quiz.test') }}" method="post">
+    <!-- Agrega onsubmit al formulario -->
+    <form action="{{ url_for('quiz.test') }}" method="post" onsubmit="disableSubmit()">
         <!-- Información del usuario -->
         <label for="user_name">Nombre:</label>
         <input type="text" id="user_name" name="user_name" placeholder="Tu nombre" required><br>
@@ -22,22 +31,16 @@
         <label for="career_profession">Carrera/Profesión:</label>
         <input type="text" id="career_profession" name="career_profession" placeholder="Tu carrera o profesión" required><br>
 
-        <!-- Imagen 1 con solución específica -->
-        <h2>Imagen 1</h2>
-        <img src="{{ url_for('static', filename='images/test/4_renos.png') }}" alt="Imagen 1">
-        <p><strong>Respuesta:</strong> hay 4 ciervos</p>
-        <textarea id="question_1" name="question_1" placeholder="¡Sé CREATIVO! Cuanto más escribas más te acercas a la respuesta" required></textarea><br>
+        <!-- Iterar sobre las preguntas -->
+        {% for question in questions %}
+            <h2>Imagen {{ loop.index }}</h2>
+            <img src="{{ url_for('static', filename=question.image_path_html) }}" alt="Imagen {{ loop.index }}">
+            <p><strong>Respuesta:</strong> {{ question.solution }}</p>
+            <textarea id="{{ question.question_id }}" name="{{ question.question_id }}" placeholder="¡Sé CREATIVO! Cuanto más escribas, más te acercas a la respuesta" required></textarea><br>
+        {% endfor %}
 
-        <!-- Imagen 2 con solución específica -->
-        <h2>Imagen 2</h2>
-        <img src="{{ url_for('static', filename='images/test/uvas.jpg') }}" alt="Imagen 2">
-        <p><strong>Respuesta:</strong> hay un racimo de uvas verdes y moradas. un total de 8 moradas y 11 verdes.</p>
-        <textarea id="question_2" name="question_2" placeholder="¡Sé CREATIVO! Cuanto más escribas más te acercas a la respuesta" required></textarea><br>
-
-        <!-- Agregar más imágenes con soluciones manualmente si es necesario -->
-        
-        <!-- Botón de envío -->
-        <button type="submit">Enviar</button>
+        <!-- Botón de envío sin onclick -->
+        <button type="submit" id="submit-button">Enviar</button>
     </form>
 </body>
 </html>

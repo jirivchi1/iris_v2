@@ -9,12 +9,12 @@
     <h1>Bienvenido al Dashboard</h1>
     <p>Esta es la página de administración solo para personal.</p>
 
-    <!-- Button to generate solution descriptions and embeddings -->
+    <!-- Botón para generar descripciones y embeddings de soluciones -->
     <form action="{{ url_for('workers.dashboard') }}" method="POST" class="form-generate">
         <button type="submit" class="btn btn-primary">Generar Descripciones y Embeddings</button>
     </form>
 
-    <!-- Form to select question and visualize ranking -->
+    <!-- Formulario para seleccionar pregunta y visualizar ranking -->
     <form action="{{ url_for('workers.visualize_ranking') }}" method="POST" class="form-ranking">
         <div class="form-group">
             <label for="question_id">Selecciona la pregunta:</label>
@@ -38,10 +38,10 @@
                 {% for item in similar_responses %}
                     <li>
                         <strong>{{ item.user_name }}</strong> - Similitud: {{ item.similarity|round(4) }}
-                        {% if item.prompt %}
-                            <br>
-                            <em>Prompt del usuario:</em> {{ item.prompt }}
-                        {% endif %}
+                        <br>
+                        <em>Prompt del usuario:</em> {{ item.user_prompt }}
+                        <br>
+                        <em>Respuesta de la IA:</em> {{ item.ai_response }}
                     </li>
                 {% endfor %}
             </ul>

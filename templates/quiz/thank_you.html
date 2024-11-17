@@ -1,0 +1,15 @@
+<!-- templates/quiz/thank_you.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gracias por Participar</title>
+    <!-- Vincula el archivo CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>¡Gracias, {{ user_name }}!</h1>
+    <p>Tu participación ha sido registrada exitosamente.</p>
+    <p>Puedes ver el ranking en el <a href="{{ url_for('main.home') }}">inicio</a> o esperar a que se actualicen los resultados.</p>
+</body>
+</html>

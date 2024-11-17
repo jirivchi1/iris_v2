@@ -1,7 +1,13 @@
 from flask import Blueprint, render_template, request
-from app.controllers.question_controller import handle_questions_and_responses
+from pymongo import MongoClient
+from datetime import datetime
 
 quiz = Blueprint("quiz", __name__)
+
+# Conexión a MongoDB
+client = MongoClient("mongodb://localhost:27017/")  # Ajusta si es necesario
+db = client["iris_database"]  # Reemplaza con el nombre de tu base de datos
+user_responses_collection = db["user_responses"]
 
 
 @quiz.route("/test", methods=["GET", "POST"])
@@ -18,59 +24,46 @@ def test():
             "image_path_model": "static/images/test/uvas.jpg",
             "image_path_html": "images/test/uvas.jpg",
         },
+        {
+            "question_id": "question_3",
+            "image_path_model": "static/images/test/platano.jpeg",
+            "image_path_html": "images/test/platano.jpeg",
+        },
     ]
 
     if request.method == "POST":
-        # Capture user information
+        # Capturar información del usuario
         user_name = request.form["user_name"]
         age = request.form["age"]
         career_profession = request.form["career_profession"]
 
-        # Capture questions from the form
-        question_texts = []
-        for idx, question in enumerate(questions_data, start=1):
-            question_text = request.form[f"question_{idx}"]
-            question["question_text"] = question_text
-            question_texts.append(question_text)
+        # Capturar respuestas del formulario
+        responses = []
+        for question in questions_data:
+            prompt = request.form[question["question_id"]]
+            responses.append(
+                {
+                    "question_id": question["question_id"],
+                    "prompt": prompt,
+                    # No generamos 'ai_response' ni 'ai_embedding' aquí
+                }
+            )
 
-        # Prepare image paths for the model
-        model_image_paths = [q["image_path_model"] for q in questions_data]
-
-        # Process responses and save to MongoDB
-        response_1, response_2 = handle_questions_and_responses(
-            user_name,
-            age,
-            career_profession,
-            question_texts[0],
-            question_texts[1],
-            model_image_paths[0],
-            model_image_paths[1],
+        # Guardar las respuestas del usuario en la base de datos sin procesar
+        user_responses_collection.insert_one(
+            {
+                "user_name": user_name,
+                "age": age,
+                "career_profession": career_profession,
+                "submission_time": datetime.utcnow(),
+                "responses": responses,
+            }
         )
 
-        # Prepare data to render in the template
-        responses = [
-            {
-                "question": question_texts[0],
-                "response": response_1,
-                "image_path": questions_data[0]["image_path_html"],
-            },
-            {
-                "question": question_texts[1],
-                "response": response_2,
-                "image_path": questions_data[1]["image_path_html"],
-            },
-        ]
+        # Renderizar la página de agradecimiento
+        return render_template("quiz/thank_you.html", user_name=user_name)
 
-        # Render the response template
-        return render_template(
-            "quiz/response.html",
-            user_name=user_name,
-            age=age,
-            career_profession=career_profession,
-            responses=responses,
-        )
-
-    # For GET requests, render the test template
+    # Para solicitudes GET, renderizar la plantilla de prueba
     return render_template(
         "quiz/test.html",
         questions=questions_data,

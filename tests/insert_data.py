@@ -22,6 +22,7 @@ questions_data = [
         "question_id": "question_2",
         "image_path": "static/images/test/uvas.jpg",
     },
+    {"question_id": "question_3", "image_path": "static/images/test/platano.jpeg"},
 ]
 
 for question in questions_data:
