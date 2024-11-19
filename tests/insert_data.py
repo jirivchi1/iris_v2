@@ -16,13 +16,19 @@ questions_collection = db["questions"]  # Updated collection name
 questions_data = [
     {
         "question_id": "question_1",
-        "image_path": "static/images/test/4_renos.png",
+        "image_path": "static/images/test/uvas.jpg",
+        "ejemplo": "Cuántas uvas hay?",
     },
     {
         "question_id": "question_2",
-        "image_path": "static/images/test/uvas.jpg",
+        "image_path": "static/images/test/4_renos.png",
+        "ejemplo": "Dime que hay en la imagen",
     },
-    {"question_id": "question_3", "image_path": "static/images/test/platano.jpeg"},
+    {
+        "question_id": "question_3",
+        "image_path": "static/images/test/platano.jpeg",
+        "ejemplo": "Dime la cantidad de bananas",
+    },
 ]
 
 for question in questions_data:

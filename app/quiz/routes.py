@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect, url_for
 from pymongo import MongoClient
 from datetime import datetime
 
@@ -8,28 +8,21 @@ quiz = Blueprint("quiz", __name__)
 client = MongoClient("mongodb://localhost:27017/")  # Ajusta si es necesario
 db = client["iris_database"]  # Reemplaza con el nombre de tu base de datos
 user_responses_collection = db["user_responses"]
+questions_collection = db["questions"]  # Colección de preguntas
 
 
 @quiz.route("/test", methods=["GET", "POST"])
 def test():
-    # Define questions and image paths
-    questions_data = [
-        {
-            "question_id": "question_1",
-            "image_path_model": "static/images/test/4_renos.png",
-            "image_path_html": "images/test/4_renos.png",
-        },
-        {
-            "question_id": "question_2",
-            "image_path_model": "static/images/test/uvas.jpg",
-            "image_path_html": "images/test/uvas.jpg",
-        },
-        {
-            "question_id": "question_3",
-            "image_path_model": "static/images/test/platano.jpeg",
-            "image_path_html": "images/test/platano.jpeg",
-        },
-    ]
+    # Recuperar preguntas desde MongoDB
+    questions_data = list(
+        questions_collection.find(
+            {}, {"_id": 0, "question_id": 1, "image_path": 1, "ejemplo": 1}
+        )
+    )
+
+    # Adaptar los paths de imagen para usarlos en el template
+    for question in questions_data:
+        question["image_path_html"] = question["image_path"].replace("static/", "")
 
     if request.method == "POST":
         # Capturar información del usuario
@@ -45,7 +38,6 @@ def test():
                 {
                     "question_id": question["question_id"],
                     "prompt": prompt,
-                    # No generamos 'ai_response' ni 'ai_embedding' aquí
                 }
             )
 
@@ -61,10 +53,43 @@ def test():
         )
 
         # Renderizar la página de agradecimiento
-        return render_template("quiz/thank_you.html", user_name=user_name)
+        # Redirigir al ranking después de mostrar el agradecimiento
+        return redirect(url_for("quiz.ranking"))
 
-    # Para solicitudes GET, renderizar la plantilla de prueba
+    # Para solicitudes GET, renderizar la plantilla de prueba con preguntas dinámicas
     return render_template(
         "quiz/test.html",
         questions=questions_data,
+    )
+
+
+@quiz.route("/ranking", methods=["GET"])
+def ranking():
+    # Recuperar todas las preguntas desde la colección de preguntas
+    questions_data = list(questions_collection.find({}, {"_id": 0, "question_id": 1}))
+    print("Questions Data:", questions_data)  # Verificar qué datos se obtienen
+
+    # Recuperar datos de las respuestas de los usuarios desde MongoDB
+    user_data = user_responses_collection.find(
+        {},
+        {"user_name": 1, "responses": 1, "_id": 0},
+    )
+
+    # Procesar las respuestas para estructurarlas de forma plana
+    response_data = []
+    for user in user_data:
+        user_name = user.get("user_name", "Unknown")
+        for response in user.get("responses", []):
+            response_data.append(
+                {
+                    "user_name": user_name,
+                    "question_id": response.get("question_id"),
+                    "prompt": response.get("prompt", "N/A"),
+                    "ai_response": response.get("ai_response", "N/A"),
+                }
+            )
+
+    # Renderizar el template con las preguntas y datos procesados
+    return render_template(
+        "quiz/ranking.html", questions=questions_data, data=response_data
     )

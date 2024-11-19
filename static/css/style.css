@@ -105,3 +105,60 @@ textarea {
         margin-bottom: 10px;
     }
 }
+
+/* static/css/style.css */
+
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 20px;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+/* Ranking-specific styles */
+body {
+    background-color: #f8f9fa;
+}
+
+h1 {
+    font-family: 'Arial', sans-serif;
+    color: #343a40;
+}
+
+.form-select {
+    max-width: 400px;
+    margin: auto;
+}
+
+.card {
+    margin-top: 15px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    box-shadow: 5px 5px 10px #babecc, -5px -5px 10px #ffffff;
+}
+
+.card-body {
+    text-align: center;
+}
+
+/* Estilo para números de ranking */
+.ranking-number {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    background-color: #ffc107; /* Amarillo para destacar */
+    color: #343a40; /* Texto oscuro */
+    font-size: 2.5rem;
+    font-weight: bold;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
