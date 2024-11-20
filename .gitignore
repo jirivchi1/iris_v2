@@ -2,3 +2,9 @@
 venv/
 .env
 venv_app/
+# Ignorar directorios de caché
+__pycache__/
+*.pyc
+
+# Ignorar logs
+*.log
