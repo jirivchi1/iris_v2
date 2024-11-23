@@ -67,7 +67,7 @@ def test():
 def ranking():
     # Recuperar todas las preguntas desde la colección de preguntas
     questions_data = list(questions_collection.find({}, {"_id": 0, "question_id": 1}))
-    print("Questions Data:", questions_data)  # Verificar qué datos se obtienen
+    # print("Questions Data:", questions_data)  # Verificar qué datos se obtienen
 
     # Recuperar datos de las respuestas de los usuarios desde MongoDB
     user_data = user_responses_collection.find(
